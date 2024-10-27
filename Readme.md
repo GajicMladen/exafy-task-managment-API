@@ -35,8 +35,8 @@ This project is a Task Management application built with Spring Boot. It allows 
 4. **Run the Application Start the application with:**
     ```bash
     mvn spring-boot:run
-   
-5. **Access the Application The application will be accessible at http://localhost:8080/tasks**
+
+5. **Access the Application The application will be accessible at http://localhost:8080/tasks , and you can see endpoints at http://localhost:8080/swagger-ui.html**
 
 
 ## Design Decisions and Trade-offs
