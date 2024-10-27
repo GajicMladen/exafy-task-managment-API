@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -19,9 +19,9 @@ public class TaskDTO {
     private Integer Id;                  // ID to uniquely identify each task
     private String Title;             // Task title
     private String Description;       // Task description
-    private Date DueDate;             // Task due date
-    private Date CreatedDate;             // Task due date
-    private Date UpdatedDate;             // Task due date
+    private LocalDateTime DueDate;             // Task due date
+    private LocalDateTime CreatedDate;             // Task due date
+    private LocalDateTime UpdatedDate;             // Task due date
     private TaskCategory Category;    // Task category: Work, Personal, or Others
     private TaskPriority Priority;    // Task priority: Low, Medium, or High
     private TaskStatus Status;        // Task status: Pending, InProgress, or Completed
@@ -39,4 +39,9 @@ public class TaskDTO {
         setCreatedDate(task.getCreatedAt());
         setUpdatedDate(task.getUpdatedAt());
      }
+
+    @Override
+    public String toString(){
+        return getId().toString()+" - "+getTitle()+"\n"+getDescription()+"\nStatus: "+getStatus().toString()+"\nAssigned User Email: ";
+    }
 }

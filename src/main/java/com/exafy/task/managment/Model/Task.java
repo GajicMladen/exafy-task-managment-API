@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -20,7 +18,7 @@ public class Task extends BaseEntity{
 
     private String title;
     private String description;
-    private Date dueDate;
+    private LocalDateTime dueDate;
     private TaskCategory category;
     private TaskPriority priority;
     private TaskStatus status;
@@ -47,7 +45,12 @@ public class Task extends BaseEntity{
         setPriority(taskDTO.getPriority());
         setStatus(taskDTO.getStatus());
         setAssignedUserEmail(taskDTO.getAssignedUserEmail());
-        setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        setUpdatedAt(LocalDateTime.now());
+    }
+
+    @Override
+    public String toString(){
+        return getId().toString()+" - "+getTitle()+"\n"+getDescription()+"\nStatus: "+getStatus().toString()+"\nAssigned User Email: ";
     }
 
 }

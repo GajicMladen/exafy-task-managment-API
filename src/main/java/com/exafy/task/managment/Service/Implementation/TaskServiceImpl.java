@@ -5,32 +5,31 @@ import com.exafy.task.managment.Model.Enum.TaskStatus;
 import com.exafy.task.managment.Model.Task;
 import com.exafy.task.managment.Repository.Implementation.TaskRepository;
 import com.exafy.task.managment.Service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
-
+    private final TaskRepository taskRepository;
 
     @Override
-    public List<TaskDTO> getAllTasks(String status, String sortBy, String direction) {
-        List<Task> tasks;
+    public Page<TaskDTO> getAllTasks(String status, String sortBy, String direction,int page,int size) {
         // Set default sorting to dueDate if sortBy is null
         String sortField = (sortBy != null && sortBy.equalsIgnoreCase("priority")) ? "priority" : "dueDate";
         Sort.Direction sortDirection = (direction != null && direction.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
         Sort sort = Sort.by(sortDirection, sortField);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, sortField));
 
+        Page<Task> tasks;
         // Apply filter if status is provided
         if (status != null) {
             TaskStatus taskStatus;
@@ -39,17 +38,13 @@ public class TaskServiceImpl implements TaskService {
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Invalid task status: " + status);
             }
-            tasks = taskRepository.findByStatus(taskStatus, sort);
+            tasks = taskRepository.findByStatus(taskStatus, pageable);
         }else{
             // Retrieve all tasks if no status filter is provided
-            tasks = taskRepository.findAll(sort);
+            tasks = taskRepository.findAll(pageable);
         }
 
-        List<TaskDTO> taskDTOList = new ArrayList<>();
-        for (Task task : tasks) {
-            taskDTOList.add(new TaskDTO(task));
-        }
-        return taskDTOList;
+        return tasks.map(TaskDTO::new);
     }
 
     @Override
@@ -69,8 +64,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDTO addTask(TaskDTO taskDTO) {
         Task newTask = new Task(taskDTO);
-        newTask.setCreatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        newTask.setUpdatedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        newTask.setCreatedAt(LocalDateTime.now());
+        newTask.setUpdatedAt(LocalDateTime.now());
         Task task = taskRepository.save(newTask);
         return new TaskDTO(task);
     }

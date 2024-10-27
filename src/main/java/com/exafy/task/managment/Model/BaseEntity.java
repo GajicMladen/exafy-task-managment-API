@@ -8,7 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import static jakarta.persistence.TemporalType.TIMESTAMP;
 
@@ -25,12 +25,12 @@ public abstract class BaseEntity implements Serializable {
     @Temporal(TIMESTAMP)
     @Column(nullable = false, updatable = false)
     @CreatedDate
-    private Date createdAt;
+    private LocalDateTime createdAt;
 
 
     @Temporal(TIMESTAMP)
     @LastModifiedDate
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
 
 }
