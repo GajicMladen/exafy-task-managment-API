@@ -9,6 +9,7 @@ import com.exafy.task.managment.Model.Task;
 import com.exafy.task.managment.Repository.Implementation.TaskRepository;
 import com.exafy.task.managment.Service.TaskService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,11 +22,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
+    @Autowired
     private final TaskRepository taskRepository;
 
     @Override
     public Page<TaskDTO> getAllTasks(String status, String sortBy, String direction, int page, int size) {
-        // Set default sorting to dueDate if sortBy is null
+
         String sortField = (sortBy != null && sortBy.equalsIgnoreCase("priority")) ? "priority" : "dueDate";
         Sort.Direction sortDirection = (direction != null && direction.equalsIgnoreCase("desc")) ? Sort.Direction.DESC : Sort.Direction.ASC;
 
