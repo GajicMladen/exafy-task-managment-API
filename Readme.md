@@ -18,8 +18,8 @@ This project is a Task Management application built with Spring Boot. It allows 
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/yourusername/task-management.git
-   cd task-management
+   git clone https://github.com/GajicMladen/exafy-task-managment-API.git
+   cd exafy-task-managment-API
 
 2. **Set Up Environment Variables Create a .env file in the root directory and add the following:**
 
