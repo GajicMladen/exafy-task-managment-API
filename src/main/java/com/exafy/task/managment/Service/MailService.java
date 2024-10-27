@@ -7,4 +7,5 @@ public interface MailService {
 
     void SendTaskCreatedMail(TaskDTO task);
     void SendTaskUpdatedMail(TaskDTO task);
+    void SendNotificationAboutDeadline(Task task, int leftDays);
 }
